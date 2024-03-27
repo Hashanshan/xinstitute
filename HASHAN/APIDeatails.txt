@@ -1,0 +1,152 @@
+#add student detail for registration
+    METHOD: POST
+    ENDPOINTURL:http://localhost/backend/studentRegistration.php/addStudents
+    REQUEST FORMAT: JSON
+    REQUEST: {
+                "first_name": "John",
+                "last_name": "Doe",
+                "birthday": "1990-01-01",
+                "address": "123 Main St",
+                "contact_number": "123-456-7890",
+                "course_name": "Computer Science"
+            }
+    RESPONCE FORMAT : JSON
+
+    RESPONCE : {
+                "status": "success",
+                "message": "Data added successfully",
+                "data": {
+                    "student_id": 6,
+                    "details": {
+                        "first_name": "John",
+                        "last_name": "Doe",
+                        "birthday": "1990-01-01",
+                        "address": "123 Main St",
+                        "contact_number": "123-456-7890",
+                        "course_name": "Computer Science"
+                    }
+                }
+            }
+
+#add course detail
+    METHOD: POST
+    ENDPOINTURL:http://localhost/backend/studentRegistration.php/addCourses
+    REQUEST FORMAT: JSON
+    REQUEST: {
+                "course_name": "Computer Science",
+                "department": "Information Technology",
+                "fee": "5000"
+            }
+    RESPONCE FORMAT : JSON
+
+    RESPONCE : {
+                "status": "success",
+                "message": "Data added successfully",
+                "data": {
+                    "course_id": 1,
+                    "details": {
+                        "course_name": "Computer Science",
+                        "department": "Information Technology",
+                        "fee": "5000"
+                    }
+                }
+            }
+
+            http://localhost/backend/studentRegistration.php/showAllUsers
+
+            {
+                "status": "success",
+                "data": [
+                    {
+                        "id": "1",
+                        "first_name": "John",
+                        "last_name": "Doe",
+                        "birthday": "1990-01-01",
+                        "address": "123 Main St",
+                        "contact_number": "123-456-7890",
+                        "course_name": "Computer Science"
+                    },
+                    {
+                        "id": "2",
+                        "first_name": "John",
+                        "last_name": "Doe",
+                        "birthday": "1990-01-01",
+                        "address": "123 Main St",
+                        "contact_number": "123-456-7890",
+                        "course_name": "Computer Science"
+                    }
+                    
+                ]
+            }
+
+#showUserById 
+        METHOD: GET
+        ENDPOINTURL: http://localhost/backend/studentRegistration.php/showUserById?id=1
+        RESPONCE FORMAT: JSON
+        RESPONCE:{
+            "status": "success",
+            "data": {
+                "id": "1",
+                "first_name": "John",
+                "last_name": "Doe",
+                "birthday": "1990-01-01",
+                "address": "123 Main St",
+                "contact_number": "123-456-7890",
+                "course_name": "Computer Science"
+            }
+        }
+
+#showAllCourses 
+        METHOD: GET
+        ENDPOINTURL:http://localhost/backend/studentRegistration.php/showAllCourses
+        RESPONCE FORMAT: JSON
+        RESPONCE:{
+                "status": "success",
+                "data": [
+                    {
+                        "id": "1",
+                        "course_name": "Computer Science",
+                        "department": "Information Technology",
+                        "fee": "5000.00"
+                    },
+                    {
+                        "id": "2",
+                        "course_name": "Computer Science",
+                        "department": "Information Technology",
+                        "fee": "5000.00"
+                    }
+                ]
+            }
+
+#login 
+        METHOD: POST
+        ENDPOINTURL:http://localhost/backend/adminpage.php/login
+        REQUEST FORMAT: JSON
+        REQUEST: 
+            {
+                "action": "login",
+                "username": "backend",
+                "password": "ksd"
+            }
+        RESPONCE FORMAT: JSON
+        RESPONCE:{
+           "status": "success",
+            "message": "Login successful"
+        }
+
+#addUser 
+        METHOD: POST
+        ENDPOINTURL:http://localhost/backend/adminpage.php/addUser
+        REQUEST FORMAT: JSON
+        REQUEST:
+            {
+                "action": "addUser",
+                "username": "john_doe",
+                "password": "password123"
+            }
+        RESPONCE FORMAT: JSON
+        RESPONCE:
+        {
+        "status": "success",
+        "message": "User added successfully"
+        }

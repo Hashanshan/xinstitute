@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #addUserForm {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        button[type="button"] {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+        .custom-alert {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.custom-alert-content {
+    text-align: center;
+}
+
+#customAlertClose {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+    </style>
+</head>
+<body>
+    <div id="customAlert" class="custom-alert">
+        <div class="custom-alert-content">
+            <span id="customAlertMessage"></span>
+            <button id="customAlertClose">Close</button>
+        </div>
+    </div>
+    
+   
+    <form id="addUserForm">
+        <h2>Add User</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="button" onclick="addUser()">Add User</button>
+    </form>
+
+    <script>
+        function showCustomAlert(title, message) {
+            // Get elements
+            const customAlert = document.getElementById('customAlert');
+            const customAlertMessage = document.getElementById('customAlertMessage');
+
+            // Set title and message
+            customAlertMessage.innerHTML = `<strong>${title}</strong><br>${message}`;
+
+            // Show custom alert
+            customAlert.style.display = 'block';
+
+            // Close button event listener
+            document.getElementById('customAlertClose').onclick = function() {
+                customAlert.style.display = 'none';
+            };
+        }
+        function addUser() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            var data = {
+                action: 'addUser',
+                username: username,
+                password: password
+            };
+
+            fetch('http://localhost/backend/adminpage.php/addUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                if(data.message == "User added successfully")
+                {
+                    showCustomAlert('Alert',data.message);
+                    setTimeout(function() {
+                        window.location.href = 'adminPage.html';
+                    }, 2000); 
+                }
+                else{
+                    showCustomAlert('Alert',data.message);
+                    
+                }
+                
+                // Handle success response here
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error here
+            });
+        }
+    </script>
+</body>
+</html>

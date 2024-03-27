@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #loginForm {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        #loginForm div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .options {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .options a {
+            text-decoration: none;
+            color: #007bff;
+            margin-right: 10px;
+        }
+
+        .custom-alert {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #c04949;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        color: #fff;
+    }
+
+    .custom-alert-content {
+        text-align: center;
+    }
+
+#customAlertClose {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+    </style>
+</head>
+<body>
+    
+
+    <form id="loginForm" action="http://localhost/backend/adminpage.php" method="POST">
+        <h2>Login</h2>
+        <input type="hidden" name="action" value="login">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+
+        <div class="options">
+            <a href="register.html">Register User</a>
+        </div>
+    </form>
+
+    <div id="customAlert" class="custom-alert">
+        <div class="custom-alert-content">
+            <span id="customAlertMessage"></span>
+            <button id="customAlertClose">Close</button>
+        </div>
+    </div>
+    
+
+    <script>
+    function showCustomAlert(title, message) {
+    // Get elements
+    const customAlert = document.getElementById('customAlert');
+    const customAlertMessage = document.getElementById('customAlertMessage');
+
+    // Set title and message
+    customAlertMessage.innerHTML = `<strong>${title}</strong><br>${message}`;
+
+    // Show custom alert
+    customAlert.style.display = 'block';
+
+    // Close button event listener
+    document.getElementById('customAlertClose').onclick = function() {
+        customAlert.style.display = 'none';
+    };
+
+
+    }
+    
+    
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+    const form = event.target;
+    const formData = new FormData(form);
+    const jsonData = {};
+
+    for (const [key, value] of formData.entries()) {
+        jsonData[key] = value;
+    }
+
+    // Manually specify the base URL
+    const baseUrl = 'http://localhost/backend/adminpage.php';
+    const url = baseUrl + '/login';
+
+    console.log("jsonData",jsonData)
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        // Handle response
+        if (data.status === 'success') {
+            showCustomAlert('Login successful!', 'Welcome back! You have successfully logged in.');
+            setTimeout(function() {
+                window.location.href = 'adminPage.html';
+            }, 2000); 
+            // Redirect or perform other actions
+        } else {
+            showCustomAlert('Login failed.', 'Please check your credentials.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showCustomAlert('Login failed.', 'Please check your credentials.');
+    });
+});
+
+function showCustomAlert(title, message) {
+    // Get elements
+    const customAlert = document.getElementById('customAlert');
+    const customAlertMessage = document.getElementById('customAlertMessage');
+
+    // Set title and message
+    customAlertMessage.innerHTML = `<strong>${title}</strong><br>${message}`;
+
+    // Show custom alert
+    customAlert.style.display = 'block';
+
+    // Close button event listener
+    document.getElementById('customAlertClose').onclick = function() {
+        customAlert.style.display = 'none';
+    };
+}
+
+    </script>
+</body>
+</html>
